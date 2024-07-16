@@ -164,7 +164,7 @@ void thread_setup(struct thread* thread, void* fpregs, void* stack, int (*callba
 
 /* helper threads are per-core idle and bottomhalves threads; they are never terminated and thus
  * their resources are never freed */
-int thread_helper_create(int (*callback)(void*), struct thread** out_thread) {
+int thread_helper_create(int (*callback)(void*), struct thread** out_thread, bool is_idle) {
     struct thread* thread = calloc(1, sizeof(*thread));
     if (!thread)
         return -PAL_ERROR_NOMEM;
@@ -182,6 +182,7 @@ int thread_helper_create(int (*callback)(void*), struct thread** out_thread) {
 
     thread_setup(thread, fpregs, stack, callback, /*param=*/NULL);
     thread->is_helper = true;
+    thread->is_idle = is_idle;
 
     *out_thread = thread;
     return 0;

@@ -173,6 +173,8 @@ static int virtio_fs_exec_request(size_t count, struct virtio_fs_desc* descs) {
     if (!(host_device_used_flags & VIRTQ_USED_F_NO_NOTIFY))
         vm_mmio_writew(g_fs->requests_notify_addr, /*queue_sel=*/1);
 
+    pal_active_record(PAL_RECORD_PROXY, true);
+
     while (true) {
         uint16_t host_used_idx = vm_shared_readw(&g_fs->requests->used->idx);
         if (host_used_idx == g_fs->requests->cached_avail_idx)
@@ -181,6 +183,8 @@ static int virtio_fs_exec_request(size_t count, struct virtio_fs_desc* descs) {
         /* FIXME: simply spinning until the VMM processes the request; maybe use MWAIT?  */
         CPU_RELAX();
     }
+
+    pal_active_record(PAL_RECORD_PROXY, false);
 
     shared_buf_addr = g_fs->shared_buf;
     for (size_t i = 0; i < count; i++) {

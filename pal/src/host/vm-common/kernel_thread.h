@@ -73,6 +73,7 @@ struct thread {
     uint32_t thread_id; /* for debugging purposes */
     int* blocked_on;
     bool is_helper; /* is it an idle or bottomhalves thread */
+    bool is_idle; /* is it an idle thread */
 
     /* CPU affinity of a thread */
     unsigned long cpu_mask[MAX_NUM_CPU_LONGS];
@@ -100,7 +101,7 @@ noreturn void thread_free_stack_and_die(void* thread_stack, int* clear_child_tid
 
 void thread_setup(struct thread* thread, void* fpregs, void* stack, int (*callback)(void*),
                   const void* param);
-int thread_helper_create(int (*callback)(void*), struct thread** out_thread);
+int thread_helper_create(int (*callback)(void*), struct thread** out_thread, bool is_idle);
 
 noreturn int thread_idle_run(void* args);
 noreturn int thread_bottomhalves_run(void* args);

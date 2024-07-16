@@ -16,6 +16,7 @@ pal_common_sources = files(
     'pal_sockets.c',
     'pal_streams.c',
     'pal_threading.c',
+    'pal_record.c',
     'printf.c',
     'slab.c',
 )

@@ -310,3 +310,6 @@ const char* pal_event_name(enum pal_event event);
         _PalProcessExit(1);                    \
     } while (0)
 #include "uthash.h"
+
+void pal_active_record(int type, bool active);
+void pal_dump_and_reset_records(void);

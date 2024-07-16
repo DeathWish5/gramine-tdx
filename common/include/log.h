@@ -59,5 +59,4 @@ static inline const char* truncate_file_name(const char* filename) {
 #define log_error(fmt...)    _log(LOG_LEVEL_ERROR, __FILE_NAME__, __func__, __LINE__, fmt)
 #define log_warning(fmt...)  _log(LOG_LEVEL_WARNING, __FILE_NAME__, __func__, __LINE__, fmt)
 #define log_debug(fmt...)    _log(LOG_LEVEL_DEBUG, __FILE_NAME__, __func__, __LINE__, fmt)
-
 #define log_trace(fmt...)    _log(LOG_LEVEL_TRACE, __FILE_NAME__, __func__, __LINE__, fmt)

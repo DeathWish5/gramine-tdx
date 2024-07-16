@@ -20,6 +20,7 @@ pal_vm_common_sources = files(
     'kernel_virtio_vsock.c',
     'kernel_vmm_inputs.c',
     'kernel_xsave.c',
+    'kernel_record.c',
     'pal_common_console.c',
     'pal_common_eventfd.c',
     'pal_common_events.c',

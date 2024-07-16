@@ -372,6 +372,7 @@ noreturn void libos_init(const char* const* argv, const char* const* envp) {
     assert(g_pal_public_state);
 
     g_log_level = g_pal_public_state->log_level;
+    // g_log_level = LOG_LEVEL_DEBUG;
 
     /* create the initial TCB, libos can not be run without a tcb */
     libos_tcb_init();

@@ -60,10 +60,13 @@ int init_multicore_prepare(uint32_t num_cpus) {
     per_cpu_interrupt_stack = ALIGN_UP_PTR(per_cpu_interrupt_stack, INTERRUPT_STACK_SIZE);
     per_cpu_interrupt_xsave_area = ALIGN_UP_PTR(per_cpu_interrupt_xsave_area,
                                                 INTERRUPT_XSAVE_AREA_SIZE);
+    
+    // JUST FOR DEBUG, DELETE ME LATER !!! 
+    assert(num_cpus == 1);
 
     for (uint32_t i = 0; i < num_cpus; i++) {
         struct thread* thread;
-        ret = thread_helper_create(thread_idle_run, &thread);
+        ret = thread_helper_create(thread_idle_run, &thread, true);
         if (ret < 0)
             goto out;
 
@@ -75,7 +78,7 @@ int init_multicore_prepare(uint32_t num_cpus) {
     }
 
     /* only CPU0 has a bottomhalves thread currently (i.e. CPU0 handles all incoming events) */
-    ret = thread_helper_create(thread_bottomhalves_run, &g_per_cpu_data[0].bottomhalves_thread);
+    ret = thread_helper_create(thread_bottomhalves_run, &g_per_cpu_data[0].bottomhalves_thread, false);
     if (ret < 0)
         goto out;
 

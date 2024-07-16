@@ -1010,4 +1010,14 @@ void PalDebugMapRemove(void* start_addr);
  * DEBUG, falls back to raw value ("0x1234"). */
 void PalDebugDescribeLocation(uintptr_t addr, char* buf, size_t buf_size);
 
+enum record_type {
+    PAL_RECORD_KERNEL    = 0,
+    PAL_RECORD_SYSCALL   = 1,
+    PAL_RECORD_PROXY = 2,
+    PAL_RECORD_USER = 3,
+};
+
+void PalActiveRecord(int type, bool active);
+void PalDumpAndResetRecords(void);
+
 #undef INSIDE_PAL_H

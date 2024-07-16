@@ -18,6 +18,8 @@
 #include "kernel_thread.h"
 #include "kernel_xsave.h"
 
+#include "pal_internal.h"
+
 /* below functions are located in kernel_events.S */
 noreturn void isr_iret_to_userland(void);
 int save_context_and_restore_next(uint64_t curr_gs_base, uint64_t next_gs_base,
@@ -174,6 +176,12 @@ void sched_thread(uint32_t* lock_to_unlock, int* clear_child_tid) {
         /* re-scheduled the same thread, no need to save/restore context */
         spinlock_unlock_enable_irq(&g_thread_list_lock);
         return;
+    }
+
+    if (curr_thread && curr_thread->is_idle) {
+        pal_active_record(PAL_RECORD_PROXY, false);
+    } else if (next_thread && next_thread->is_idle) {
+        pal_active_record(PAL_RECORD_PROXY, true);
     }
 
     /* it is cumbersome to restore FSBASE in asm, so restore explicitly here */

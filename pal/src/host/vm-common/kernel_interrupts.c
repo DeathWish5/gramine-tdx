@@ -84,6 +84,8 @@ void isr_c(struct isr_regs* regs) {
     extern char gdt_entry_kernel_cs[1];
     uint64_t kernel_cs = (uint64_t)(gdt_entry_kernel_cs - gdt_start);
 
+    // pal_active_record(PAL_RECORD_KERNEL, true);
+
     switch (regs->int_number) {
         case 14: ;
             /* below code is currently only for diagnostics; we always panic on PFs */
@@ -182,6 +184,8 @@ void isr_c(struct isr_regs* regs) {
             log_error("       rip=0x%lx rsp=0x%lx rax=0x%lx", regs->rip, regs->rsp, regs->rax);
             triple_fault();
     }
+
+    // pal_active_record(PAL_RECORD_KERNEL, false);
 }
 
 int send_invalidate_tlb_ipi_and_wait(void* addr, size_t size, bool invalidate_on_this_cpu) {

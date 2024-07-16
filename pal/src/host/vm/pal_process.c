@@ -13,6 +13,7 @@
 #include "kernel_interrupts.h"
 
 noreturn void _PalProcessExit(int exitcode) {
+    pal_dump_and_reset_records();
     log_always("[ VM exited with code %d ]", exitcode);
     triple_fault();
 }
